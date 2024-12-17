@@ -63,7 +63,7 @@ To get started with the SpeedTix Chatbot locally, follow these steps:
 ### Step to Run
 1. **Clone the Repository**  
    Clone the project repository to your local machine using the following command:  
-   git clone https://github.com/yourusername/SpeedTix-Chatbot.git
+   git clone https://github.com/roshan0503/SpeedTix-Chatbot---A-Ticket-Booking-Chatbot.git
    cd SpeedTix-Chatbot
 
 2. **Open `welcome.html`**  
