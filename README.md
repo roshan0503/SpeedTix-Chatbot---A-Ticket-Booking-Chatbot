@@ -59,6 +59,7 @@ SpeedTix-Chatbot/
 ├── assets/             # Images, icons, and fonts
 └── README.md           # Project documentation
 
+---
 
 🚀 Getting Started
 Follow the steps below to set up and run the SpeedTix Chatbot locally:
