@@ -58,3 +58,31 @@ SpeedTix-Chatbot/
 │
 ├── assets/             # Images, icons, and fonts
 └── README.md           # Project documentation
+
+
+🚀 Getting Started
+Follow the steps below to set up and run the SpeedTix Chatbot locally:
+
+Prerequisites
+Modern web browser (Chrome, Firefox, Edge).
+Code editor (e.g., VS Code).
+Steps to Run
+Clone the Repository:
+
+bash
+Copy code
+git clone https://github.com/yourusername/SpeedTix-Chatbot.git
+cd SpeedTix-Chatbot
+Open welcome.html:
+
+Simply open the welcome.html file in your preferred browser to start the chatbot-driven ticket booking system.
+🎥 Project Flow
+Welcome Page: Introduction to the chatbot system.
+Chatbot Interaction: Users input event details (type, venue, date, etc.) via the chatbot interface.
+Payment Verification: Users enter a 12-digit Transaction ID for simulated payment confirmation.
+Ticket Generation: A ticket with the Booking ID and QR code is dynamically displayed for download.
+📈 Future Scope
+Backend Integration: For multi-user support and secure data persistence.
+AI-Powered NLP: Enhancing chatbot responses for natural language understanding.
+Multi-Platform Support: Expanding to mobile apps and messaging platforms.
+Real-Time Updates: Integration with live ticket availability systems.
