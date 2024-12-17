@@ -61,7 +61,7 @@ SpeedTix-Chatbot/
 
 ---
 
-🚀 Getting Started
+## 🚀 Getting Started
 Follow the steps below to set up and run the SpeedTix Chatbot locally:
 
 Prerequisites
