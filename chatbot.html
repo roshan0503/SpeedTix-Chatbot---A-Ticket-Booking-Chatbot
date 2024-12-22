@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> SpeedTix Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #f5f7fa;
+            --button-color: #0084FF;
+            --chat-background: white;
+            --chat-header: #4A90E2;
+            --message-user: #0084FF;
+            --message-bot: #f0f4f8;
+            --text-color: #333;
+            --background-image: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            --box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px, rgba(0, 0, 0, 0.05) 0px 4px 6px;
+        }
+
+        .theme-movie {
+            --primary-color: #FFD700;
+            --secondary-color: #FFF8E7;
+            --button-color: #FFB700;
+            --chat-header: #FFD700;
+            --message-user: #FFB700;
+            --message-bot: #FFF8E7;
+            --text-color: #5A4500;
+            --background-image: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/movie.jpg-O43iyzxReLirX4H5U7PRhmNZBLXdsy.jpeg');
+        }
+
+        .theme-museum {
+            --primary-color: #8B8B83;
+            --secondary-color: #F5F5F0;
+            --button-color: #6B6B63;
+            --chat-header: #8B8B83;
+            --message-user: #6B6B63;
+            --message-bot: #F5F5F0;
+            --text-color: #333333;
+            --background-image: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/museum1.jpg-lSUOw0g2EZJe3DgWsavVd6Aiz4TVlY.jpeg');
+        }
+
+        .theme-concert {
+            --primary-color: #00F0FF;
+            --secondary-color: #1A1A1A;
+            --button-color: #00D0FF;
+            --chat-header: #00F0FF;
+            --message-user: #00D0FF;
+            --message-bot: #2A2A2A;
+            --text-color: #FFFFFF;
+            --background-image: url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/musicconcert.jpg-Lw2TPea4Pf94mDhMgsJNKRlBCsuS4G.jpeg');
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chat-container {
+            width: 400px;
+            background-color: var(--chat-background);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .chat-header {
+            background-color: var(--chat-header);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--secondary-color);
+            max-height: 400px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .bot-message, .user-message {
+            padding: 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .bot-message {
+            background-color: var(--message-bot);
+            color: var(--text-color);
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .user-message {
+            background-color: var(--message-user);
+            color: white;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 20px;
+            background-color: var(--chat-background);
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input input {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .chat-input button {
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+
+        .chat-input button:hover {
+            opacity: 0.9;
+        }
+
+        .option-button {
+            display: inline-block;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+
+        .option-button:hover {
+            opacity: 0.9;
+        }
+
+        .datetime-picker {
+            width: calc(100% - 110px);
+            margin-right: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header"> SpeedTix Chatbot</div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">Hello! Welcome to  SpeedTix. What's your name?</div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Type your message..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        let step = 0;
+        let bookingDetails = {};
+
+        const eventThemes = {
+            'Movie': { themeClass: 'theme-movie', backgroundImage: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/movie.jpg-O43iyzxReLirX4H5U7PRhmNZBLXdsy.jpeg' },
+            'Museum': { themeClass: 'theme-museum', backgroundImage: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/museum1.jpg-lSUOw0g2EZJe3DgWsavVd6Aiz4TVlY.jpeg' },
+            'Music Concert': { themeClass: 'theme-concert', backgroundImage: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/musicconcert.jpg-Lw2TPea4Pf94mDhMgsJNKRlBCsuS4G.jpeg' }
+        };
+
+        const venueData = {
+            'Gandhinagar': {
+                'Movie': ['Cineplex Gandhinagar', 'PVR Cinemas', 'INOX R World', 'Carnival Cinemas', 'City Gold'],
+                'Music Concert': ['Nehru Auditorium', 'Riverfront Amphitheater', 'Cultural Center Hall', 'Gandhinagar Club Ground', 'Central Park Venue'],
+                'Museum': ['Indroda Nature Park', 'Children\'s Museum', 'Science City', 'Art and Cultural Museum', 'Heritage Museum']
+            },
+            'Mumbai': {
+                'Movie': ['PVR Phoenix', 'INOX R-City', 'Carnival Cinemas', 'Cinepolis Andheri', 'Regal Cinema'],
+                'Music Concert': ['JioGarden', 'Shanmukhananda Hall', 'Gateway of India', 'NSCI Dome', 'Marine Drive Amphitheater'],
+                'Museum': ['Chhatrapati Shivaji Maharaj Vastu Sangrahalaya', 'Nehru Science Centre', 'Bhau Daji Lad Museum', 'Dr. Bhau Daji Lad Museum', 'RBI Monetary Museum']
+            }
+        };
+
+        userInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        function changeTheme(eventType) {
+            if (eventType) {
+                const theme = eventThemes[eventType];
+                if (theme) {
+                    document.body.classList.remove('theme-movie', 'theme-museum', 'theme-concert');
+                    document.body.classList.add(theme.themeClass);
+                    document.body.style.backgroundImage = `url('${theme.backgroundImage}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundAttachment = 'fixed';
+                }
+            } else {
+                // Reset to initial background
+                document.body.classList.remove('theme-movie', 'theme-museum', 'theme-concert');
+                document.body.style.background = 'linear-gradient(135deg, #74ebd5, #ACB6E5)';
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundAttachment = 'fixed';
+            }
+        }
+
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            addMessage(message, 'user-message');
+            userInput.value = '';
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    processUserInput(message);
+                }, 1000);
+            }, 500);
+        }
+
+        function addMessage(text, className) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.textContent = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'message bot-message';
+            typingIndicator.id = 'typingIndicator';
+            typingIndicator.textContent = 'Typing...';
+            chatMessages.appendChild(typingIndicator);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) typingIndicator.remove();
+        }
+
+        function addEventOptions() {
+            const optionsDiv = document.createElement('div');
+            optionsDiv.style.textAlign = 'center';
+            optionsDiv.innerHTML = ['Movie', 'Museum', 'Music Concert']
+                .map(eventType => `<button class="option-button" onclick="selectOption('${eventType}')">${eventType}</button>`)
+                .join('');
+            chatMessages.appendChild(optionsDiv);
+        }
+
+        function addDateTimePicker() {
+            const dateTimeDiv = document.createElement('div');
+            dateTimeDiv.style.textAlign = 'center';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'datetimePicker';
+            input.className = 'datetime-picker';
+            input.placeholder = 'Select date and time';
+            const submitButton = document.createElement('button');
+            submitButton.textContent = 'Submit';
+            submitButton.className = 'option-button';
+            submitButton.onclick = function() {
+                const selectedDateTime = document.getElementById('datetimePicker').value;
+                if (selectedDateTime) {
+                    selectOption(selectedDateTime);
+                } else {
+                    alert('Please select a date and time before submitting.');
+                }
+            };
+            dateTimeDiv.appendChild(input);
+            dateTimeDiv.appendChild(submitButton);
+            chatMessages.appendChild(dateTimeDiv);
+
+            flatpickr(input, {
+                enableTime: true,
+                dateFormat: "Y-m-d h:i K",
+                minDate: "today",
+                time_24hr: false,
+                onClose: function(selectedDates, dateStr, instance) {
+                    const selectedTime = selectedDates[0];
+                    const hours = selectedTime.getHours();
+                    if (hours >= 21 || hours < 6) {
+                        alert("The venue is closed between 9:00 PM and 6:00 AM. Please select a different time.");
+                        instance.clear();
+                    }
+                }
+            });
+        }
+
+        function selectOption(option) {
+            userInput.value = option;
+            sendMessage();
+        }
+
+        function getTopVenues(city, eventType) {
+            const cityVenues = venueData[city];
+            return cityVenues && cityVenues[eventType]
+                ? cityVenues[eventType]
+                : [`No specific venues found in ${city} for ${eventType}. Please enter another city or a different location.`];
+        }
+
+        function addVenueOptions(venues) {
+            const optionsDiv = document.createElement('div');
+            optionsDiv.style.textAlign = 'center';
+            optionsDiv.innerHTML = venues
+                .map(venue => `<button class="option-button" onclick="selectOption('${venue}')">${venue}</button>`)
+                .join('');
+            chatMessages.appendChild(optionsDiv);
+        }
+
+        function addPaymentButton() {
+            const paymentDiv = document.createElement('div');
+            paymentDiv.style.textAlign = 'center';
+            const paymentButton = document.createElement('button');
+            paymentButton.textContent = 'Proceed to Payment';
+            paymentButton.className = 'option-button';
+            paymentButton.onclick = function() {
+                addMessage('Proceeding to payment...', 'bot-message');
+                setTimeout(() => {
+                    window.location.href = 'payment.html';
+                }, 2000);
+            };
+            paymentDiv.appendChild(paymentButton);
+            chatMessages.appendChild(paymentDiv);
+        }
+
+        function processUserInput(input) {
+            let botResponse = '';
+            switch (step) {
+                case 0:
+                    botResponse = `Nice to meet you, ${input}! What type of event would you like to book?`;
+                    bookingDetails.name = input;
+                    localStorage.setItem("name", input);
+                    addEventOptions();
+                    step++;
+                    break;
+                case 1:
+                    bookingDetails.eventType = input;
+                    localStorage.setItem("eventType", input);
+                    botResponse = `Great choice! Where would you like to attend the ${input}?`;
+                    changeTheme(input);
+                    step++;
+                    break;
+                case 2:
+                    bookingDetails.location = input;
+                    localStorage.setItem("location", input);
+                    const topVenues = getTopVenues(input, bookingDetails.eventType);
+                    botResponse = topVenues.length === 1 && topVenues[0].startsWith('No specific venues')
+                        ? topVenues[0]
+                        : `Here are the top venues in ${input} for ${bookingDetails.eventType}:`;
+                    addVenueOptions(topVenues);
+                    step++;
+                    break;
+                case 3:
+                    bookingDetails.venue = input;
+                    localStorage.setItem("venue", input);
+                    botResponse = 'Please select your preferred date and time:';
+                    addDateTimePicker();
+                    step++;
+                    break;
+                case 4:
+                    bookingDetails.datetime = input;
+                    localStorage.setItem("dateTime", input);
+                    botResponse = 'How many people will be attending? (Maximum 100 tickets)';
+                    step++;
+                    break;
+                case 5:
+                    const attendees = parseInt(input);
+                    if (isNaN(attendees) || attendees <= 0) {
+                        botResponse = "Please enter a valid number of attendees.";
+                    } else if (attendees > 100) {
+                        botResponse = "I'm sorry, but you can't book more than 100 tickets. Please enter a number between 1 and 100.";
+                    } else {
+                        bookingDetails.attendees = attendees;
+                        localStorage.setItem("people", attendees.toString());
+                        const ticketPrice = 10;
+                        const totalAmount = attendees * ticketPrice;
+                        botResponse = `Great! ${attendees} people will be attending. The total amount is ${totalAmount} Rs. Would you like to proceed to payment?`;
+                        addPaymentButton();
+                        step++;
+                    }
+                    break;
+                default:
+                    botResponse = "I'm sorry, I didn't understand that. Can you please try again?";
+            }
+            addMessage(botResponse, 'bot-message');
+        }
+
+        // Initialize the background
+        changeTheme();
+    </script>
+</body>
+</html>

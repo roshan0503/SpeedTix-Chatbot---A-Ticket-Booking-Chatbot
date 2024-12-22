@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Verification</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .container img {
+            width: 180px;
+            height: auto;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .container img:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .amount {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #74ebd5;
+            outline: none;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ACB6E5, #74ebd5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="qr.jpg" alt="QR Code">
+        <p class="amount" id="amount">Amount to Pay: 0 Rs</p>
+        <h2>Enter Transaction ID</h2>
+        <input type="text" id="transaction-id" placeholder="Transaction ID" required>
+        <p class="error" id="error-message">Transaction ID is Incorrect.</p>
+        <button onclick="proceedToTicket()">Proceed to Ticket Generation</button>
+    </div>
+
+    <script>
+        // Retrieve the number of people from local storage
+        const people = parseInt(localStorage.getItem("people")) || 0;
+        const ticketPrice = 10;
+        const totalAmount = people * ticketPrice;
+
+        // Display the calculated amount
+        document.getElementById("amount").textContent = `Amount to Pay: ${totalAmount} Rs`;
+
+        function proceedToTicket() {
+            const transactionId = document.getElementById('transaction-id').value;
+            const errorMessage = document.getElementById('error-message');
+            
+            if (transactionId.length === 12 && /^\d+$/.test(transactionId)) {
+                // Save transaction ID in local storage and proceed
+                localStorage.setItem("transactionId", transactionId);
+                errorMessage.style.display = 'none';
+                window.location.href = "ticket.html";
+            } else {
+                errorMessage.style.display = 'block';
+            }
+        }
+    </script>
+
+</body>
+</html>

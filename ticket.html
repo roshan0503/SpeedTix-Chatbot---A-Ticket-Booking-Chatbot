@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generated Ticket</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+    :root {
+        --primary-color: #4A90E2;
+        --background-color: #f5f7fa;
+        --ticket-border: #4A90E2;
+        --box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px, rgba(0, 0, 0, 0.05) 0px 4px 6px;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: 'Roboto', sans-serif;
+        background: var(--background-color);
+        margin: 0;
+    }
+
+    .ticket-container {
+        width: 400px;
+        padding: 20px;
+        background-color: white;
+        border: 2px solid var(--ticket-border);
+        border-radius: 15px;
+        box-shadow: var(--box-shadow);
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .ticket-header {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+
+    .ticket-details {
+        font-size: 1rem;
+        text-align: left;
+        margin: 10px 0;
+    }
+
+    .ticket-details p {
+        margin: 5px 0;
+        line-height: 1.5;
+    }
+
+    .ticket-footer {
+        margin-top: 20px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .qr-code {
+        margin-top: 20px;
+        display: inline-block;
+        padding: 10px;
+        background: #f5f7fa;
+        border-radius: 10px;
+    }
+
+    .download-button {
+        background-color: #4A90E2;
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1em;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s;
+    }
+
+    .download-button:hover {
+        background-color: #357ABD;
+    }
+</style>
+</head>
+<body>
+<div id="ticket" class="ticket-container">
+    <div class="ticket-header">Your Ticket</div>
+    <div class="ticket-details">
+        <p><strong>Name:</strong> <span id="name"></span></p>
+        <p><strong>Event:</strong> <span id="eventType"></span></p>
+        <p><strong>Location:</strong> <span id="location"></span></p>
+        <p><strong>Venue:</strong> <span id="venue"></span></p>
+        <p><strong>Date & Time:</strong> <span id="dateTime"></span></p>
+        <p><strong>Number of Tickets:</strong> <span id="people"></span></p>
+        <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+    </div>
+    <div class="qr-code" id="qrCode"></div>
+    <div class="ticket-footer">
+        <p><strong>Booking ID:</strong> <span id="bookingId"></span></p>
+        <p><strong>Booking Date:</strong> <span id="bookingDate"></span></p>
+        <p>Thank you for booking with SpeedTix!</p>
+    </div>
+</div>
+<button class="download-button" onclick="downloadTicket()">Download Ticket</button>
+
+<script>
+    // Retrieve data from local storage
+    document.getElementById("name").innerText = localStorage.getItem("name");
+    document.getElementById("eventType").innerText = localStorage.getItem("eventType");
+    document.getElementById("location").innerText = localStorage.getItem("location");
+    document.getElementById("venue").innerText = localStorage.getItem("venue");
+    document.getElementById("dateTime").innerText = localStorage.getItem("dateTime");
+    document.getElementById("people").innerText = localStorage.getItem("people");
+    const transactionId = localStorage.getItem("transactionId");
+    document.getElementById("transactionId").innerText = transactionId;
+
+    // Generate unique booking ID and current date for booking time
+    const bookingId = Math.random().toString(36).substr(2, 9).toUpperCase();
+    const bookingDate = new Date().toLocaleString();
+    document.getElementById("bookingId").innerText = bookingId;
+    document.getElementById("bookingDate").innerText = bookingDate;
+
+    // Generate the QR code
+    const qrData = `Transaction ID: ${transactionId}, Booking ID: ${bookingId}`;
+    const qrCodeContainer = document.getElementById('qrCode');
+    new QRCode(qrCodeContainer, {
+        text: qrData,
+        width: 150,
+        height: 150,
+        colorDark: "#000000",
+        colorLight: "#f5f7fa",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+
+    // Function to download the ticket as an image
+    function downloadTicket() {
+        const ticketElement = document.getElementById("ticket");
+        
+        html2canvas(ticketElement, {
+            scale: 2, // Increase the scale for better quality
+            logging: false, // Disable logging
+            useCORS: true // Enable CORS for the QR code image
+        }).then(canvas => {
+            // Create a temporary link element
+            const link = document.createElement("a");
+            // Set the download attribute with a dynamic filename
+            link.download = `Ticket_${bookingId}.png`;
+            // Convert the canvas to a data URL
+            link.href = canvas.toDataURL("image/png");
+            // Append the link to the body
+            document.body.appendChild(link);
+            // Programmatically click the link to trigger the download
+            link.click();
+            // Remove the link from the body
+            document.body.removeChild(link);
+        });
+    }
+</script>
+</body>
+</html>
